@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import moment from 'moment'
 
 import './App.css'
 import {
@@ -30,7 +31,8 @@ const App = (props) => {
     e.preventDefault()
 
     let res = await axios.post(
-      'https://docx-generator-sample.herokuapp.com/docx',
+      // 'https://docx-generator-sample.herokuapp.com/docx',
+      'http://localhost:5000/docx',
       body,
       {
         responseType: 'blob',
@@ -39,7 +41,10 @@ const App = (props) => {
     const url = window.URL.createObjectURL(new Blob([res.data]))
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', 'contract.docx') //or any other extension
+    const fileName = `Credly – Credential Package Order Form – ${
+      body.issuer.name
+    } (${moment().format('MMMM DD, YYYY')}) v0.1.docx`
+    link.setAttribute('download', fileName) //or any other extension
     document.body.appendChild(link)
     link.click()
   }
@@ -47,7 +52,9 @@ const App = (props) => {
   return (
     <Container>
       <Form onSubmit={submitHandler}>
-        {/* <Header as="h3">Issuer Data</Header> */}
+        <Header as="h2" style={{ marginTop: 20 }}>
+          Credly Order Form Generator
+        </Header>
         {/* Issuer Name */}
         <Form.Field required>
           <label>Legal Name of Issuer</label>
@@ -89,7 +96,9 @@ const App = (props) => {
 
         {/* Issuer Entity */}
         <Form.Field>
-          <label>Type of Entity</label>
+          <label>
+            Type of Entity (corporation, institution of higher education, etc…)
+          </label>
           <input
             required
             value={body.issuer.entity}
@@ -275,7 +284,7 @@ const App = (props) => {
         {/* Purchase Implementation? */}
         <Form.Group grouped>
           <Form.Group inline>
-            <label>Will the client Purchase Implementation?</label>
+            <label>Will the client purchase Implementation?</label>
             <Form.Field
               control={Radio}
               label="Yes"
@@ -298,152 +307,168 @@ const App = (props) => {
             />
           </Form.Group>
           {body.services.willPurchaseImplementation && (
-            <Form.Field inline>
-              <label>Select Implementation</label>
-              <select
-                required
-                value={body.services.implementation}
-                onChange={(e) => {
-                  setData('services', 'implementation', e.target.value)
-                }}
-              >
-                <option value="selfPaced">Self-Paced Onboarding</option>
-                <option value="workshop">Workshop Package</option>
-                <option value="standard">Standard Implementation </option>
-              </select>
-            </Form.Field>
+            <React.Fragment>
+              <Form.Field inline>
+                <label>Select Implementation</label>
+                <select
+                  required
+                  value={body.services.implementation}
+                  onChange={(e) => {
+                    setData('services', 'implementation', e.target.value)
+                  }}
+                >
+                  <option value="selfPaced">Self-Paced Onboarding</option>
+                  <option value="workshop">Workshop Package</option>
+                  <option value="standard">Standard Implementation </option>
+                </select>
+              </Form.Field>
+
+              <Form.Field inline>
+                <label>Implementation Fee?</label>
+                <Input
+                  required
+                  value={body.services.implementationFee}
+                  onChange={(e) => {
+                    setData('services', 'implementationFee', e.target.value)
+                  }}
+                />
+              </Form.Field>
+            </React.Fragment>
           )}
         </Form.Group>
 
         {/* Excess Fees Credentials */}
-        <Form.Group grouped>
-          <Form.Group inline>
-            <label>Will the client purchase Historical Credentials?</label>
-            <Form.Field
-              control={Radio}
-              label="Yes"
-              value={true}
-              name="willPurchaseHistoricCredentials"
-              checked={body.services.willPurchaseHistoricCredentials === true}
-              onChange={(e, { value }) =>
-                setData('services', 'willPurchaseHistoricCredentials', value)
-              }
-            />
-            <Form.Field
-              control={Radio}
-              label="No"
-              value={false}
-              name="willPurchaseHistoricCredentials"
-              checked={body.services.willPurchaseHistoricCredentials === false}
-              onChange={(e, { value }) =>
-                setData('services', 'willPurchaseHistoricCredentials', value)
-              }
-            />
+        {body.services.credentialsOrEarners === 'credentials' ? (
+          <Form.Group grouped>
+            <Form.Group inline>
+              <label>Will the client purchase Historical Credentials?</label>
+              <Form.Field
+                control={Radio}
+                label="Yes"
+                value={true}
+                name="willPurchaseHistoricCredentials"
+                checked={body.services.willPurchaseHistoricCredentials === true}
+                onChange={(e, { value }) =>
+                  setData('services', 'willPurchaseHistoricCredentials', value)
+                }
+              />
+              <Form.Field
+                control={Radio}
+                label="No"
+                value={false}
+                name="willPurchaseHistoricCredentials"
+                checked={
+                  body.services.willPurchaseHistoricCredentials === false
+                }
+                onChange={(e, { value }) =>
+                  setData('services', 'willPurchaseHistoricCredentials', value)
+                }
+              />
+            </Form.Group>
+            {body.services.willPurchaseHistoricCredentials && (
+              <React.Fragment>
+                <Form.Field required inline>
+                  <label>Number of Historical Credentials</label>
+                  <Input
+                    required
+                    value={body.services.numberOfHistoricCredentials}
+                    onChange={(e) => {
+                      setData(
+                        'services',
+                        'numberOfHistoricCredentials',
+                        e.target.value,
+                      )
+                    }}
+                  />
+                </Form.Field>
+                <Form.Field required inline>
+                  <label>Fee for Historical Credentials </label>
+                  <Input
+                    required
+                    value={body.services.feeForHistoricCredentials}
+                    onChange={(e) => {
+                      setData(
+                        'services',
+                        'feeForHistoricCredentials',
+                        e.target.value,
+                      )
+                    }}
+                  />
+                </Form.Field>
+              </React.Fragment>
+            )}
           </Form.Group>
-          {body.services.willPurchaseHistoricCredentials && (
-            <React.Fragment>
-              <Form.Field required inline>
-                <label>Number of Historical Credentials</label>
-                <Input
-                  required
-                  value={body.services.numberOfHistoricCredentials}
-                  onChange={(e) => {
-                    setData(
-                      'services',
-                      'numberOfHistoricCredentials',
-                      e.target.value,
-                    )
-                  }}
-                />
-              </Form.Field>
-              <Form.Field required inline>
-                <label>Fee for Historical Credentials </label>
-                <Input
-                  required
-                  value={body.services.feeForHistoricCredentials}
-                  onChange={(e) => {
-                    setData(
-                      'services',
-                      'feeForHistoricCredentials',
-                      e.target.value,
-                    )
-                  }}
-                />
-              </Form.Field>
-            </React.Fragment>
-          )}
-        </Form.Group>
-
-        {/* Excess Fees Active Earners */}
-        <Form.Group grouped>
-          <Form.Group inline>
-            <label>Will the client purchase Historical Active Earners?</label>
-            <Form.Field
-              control={Radio}
-              label="Yes"
-              value={true}
-              name="willPurchaseHistoricalActiveEarners"
-              checked={
-                body.services.willPurchaseHistoricalActiveEarners === true
-              }
-              onChange={(e, { value }) =>
-                setData(
-                  'services',
-                  'willPurchaseHistoricalActiveEarners',
-                  value,
-                )
-              }
-            />
-            <Form.Field
-              control={Radio}
-              label="No"
-              value={false}
-              name="willPurchaseHistoricalActiveEarners"
-              checked={
-                body.services.willPurchaseHistoricalActiveEarners === false
-              }
-              onChange={(e, { value }) =>
-                setData(
-                  'services',
-                  'willPurchaseHistoricalActiveEarners',
-                  value,
-                )
-              }
-            />
+        ) : (
+          <Form.Group grouped>
+            <Form.Group inline>
+              <label>Will the client purchase Historical Active Earners?</label>
+              <Form.Field
+                control={Radio}
+                label="Yes"
+                value={true}
+                name="willPurchaseHistoricalActiveEarners"
+                checked={
+                  body.services.willPurchaseHistoricalActiveEarners === true
+                }
+                onChange={(e, { value }) =>
+                  setData(
+                    'services',
+                    'willPurchaseHistoricalActiveEarners',
+                    value,
+                  )
+                }
+              />
+              <Form.Field
+                control={Radio}
+                label="No"
+                value={false}
+                name="willPurchaseHistoricalActiveEarners"
+                checked={
+                  body.services.willPurchaseHistoricalActiveEarners === false
+                }
+                onChange={(e, { value }) =>
+                  setData(
+                    'services',
+                    'willPurchaseHistoricalActiveEarners',
+                    value,
+                  )
+                }
+              />
+            </Form.Group>
+            {body.services.willPurchaseHistoricalActiveEarners && (
+              <React.Fragment>
+                <Form.Field required inline>
+                  <label>Number of Historical Active Earners </label>
+                  <Input
+                    required
+                    value={body.services.numberOfHistoricalActiveEarners}
+                    onChange={(e) => {
+                      setData(
+                        'services',
+                        'numberOfHistoricalActiveEarners',
+                        e.target.value,
+                      )
+                    }}
+                  />
+                </Form.Field>
+                <Form.Field required inline>
+                  <label>Fee for Historical Active Earners</label>
+                  <Input
+                    required
+                    value={body.services.feeForHistoricalActiveEarners}
+                    onChange={(e) => {
+                      setData(
+                        'services',
+                        'feeForHistoricalActiveEarners',
+                        e.target.value,
+                      )
+                    }}
+                  />
+                </Form.Field>
+              </React.Fragment>
+            )}
           </Form.Group>
-          {body.services.willPurchaseHistoricalActiveEarners && (
-            <React.Fragment>
-              <Form.Field required inline>
-                <label>Number of Historical Active Earners </label>
-                <Input
-                  required
-                  value={body.services.numberOfHistoricalActiveEarners}
-                  onChange={(e) => {
-                    setData(
-                      'services',
-                      'numberOfHistoricalActiveEarners',
-                      e.target.value,
-                    )
-                  }}
-                />
-              </Form.Field>
-              <Form.Field required inline>
-                <label>Fee for Historical Active Earners</label>
-                <Input
-                  required
-                  value={body.services.feeForHistoricalActiveEarners}
-                  onChange={(e) => {
-                    setData(
-                      'services',
-                      'feeForHistoricalActiveEarners',
-                      e.target.value,
-                    )
-                  }}
-                />
-              </Form.Field>
-            </React.Fragment>
-          )}
-        </Form.Group>
+        )}
 
         {/* Purchase Talent Directory? */}
         <Form.Group grouped>
@@ -487,7 +512,7 @@ const App = (props) => {
         {/* Purchase Employee Directory? */}
         <Form.Group grouped>
           <Form.Group inline>
-            <label>Will the client purchase Directory?</label>
+            <label>Will the client purchase Employee Directory?</label>
             <Form.Field
               control={Radio}
               label="Yes"

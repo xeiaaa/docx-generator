@@ -1,9 +1,10 @@
 const contractData = {
   issuer: {
-    name: '',
-    address: '',
-    corporateLocation: '',
-    entity: '',
+    name: 'Bret Axl Sebastian',
+    address:
+      '27 Bonifacio St., Brgy. Pag-asa\nOlongapo City, Zambales\nPhilippines',
+    corporateLocation: 'Subic Bay Freeport Zone',
+    entity: '[Entity]',
   },
   agreement: {
     issuerType: 'academic', // academic , non-academic
@@ -16,7 +17,7 @@ const contractData = {
     */
     isFirstDayOfMonth: true,
     startDate: '',
-    term: '',
+    term: '[TERM]',
     autoRenew: false,
     paymentTerms: 'annually', // quarterly, annually
   },
