@@ -5,13 +5,12 @@ import moment from 'moment'
 import './App.css'
 import {
   Button,
-  Checkbox,
   Form,
   Radio,
   Container,
-  Table,
   Header,
   Input,
+  Divider,
 } from 'semantic-ui-react'
 
 import contractData from './contractData'
@@ -51,15 +50,15 @@ const App = (props) => {
 
   return (
     <Container>
-      <Form onSubmit={submitHandler}>
-        <Header as="h2" style={{ marginTop: 20 }}>
+      <Form onSubmit={submitHandler} style={{ paddingBottom: 20 }}>
+        <Header as="h1" style={{ marginTop: 20 }}>
           Credly Order Form Generator
         </Header>
         {/* Issuer Name */}
         <Form.Field required>
           <label>Legal Name of Issuer</label>
           <Input
-            placeholder="Full name"
+            // placeholder="Full name"
             required
             value={body.issuer.name}
             onChange={(e) => {
@@ -69,11 +68,11 @@ const App = (props) => {
         </Form.Field>
 
         {/* Issuer Address */}
-        <Form.Field>
+        <Form.Field required>
           <label>Address of Issuer</label>
           <textarea
             rows="4"
-            placeholder="Address of Issuer"
+            // placeholder="Address of Issuer"
             value={body.issuer.address}
             required
             onChange={(e) => {
@@ -83,7 +82,7 @@ const App = (props) => {
         </Form.Field>
 
         {/* Issuer Corporate Location */}
-        <Form.Field>
+        <Form.Field required>
           <label>State or Country of Incorporation</label>
           <input
             required
@@ -95,7 +94,7 @@ const App = (props) => {
         </Form.Field>
 
         {/* Issuer Entity */}
-        <Form.Field>
+        <Form.Field required>
           <label>
             Type of Entity (corporation, institution of higher education, etc…)
           </label>
@@ -157,7 +156,7 @@ const App = (props) => {
             }
           />
           {!body.agreementList.isFirstDayOfMonth && (
-            <Form.Field>
+            <Form.Field required>
               <input
                 type="date"
                 required
@@ -171,7 +170,7 @@ const App = (props) => {
         </Form.Group>
 
         {/* Term */}
-        <Form.Field>
+        <Form.Field required>
           <label>Term</label>
           <input
             required
@@ -308,7 +307,7 @@ const App = (props) => {
           </Form.Group>
           {body.services.willPurchaseImplementation && (
             <React.Fragment>
-              <Form.Field inline>
+              <Form.Field inline required>
                 <label>Select Implementation</label>
                 <select
                   required
@@ -323,7 +322,7 @@ const App = (props) => {
                 </select>
               </Form.Field>
 
-              <Form.Field inline>
+              <Form.Field inline required>
                 <label>Implementation Fee?</label>
                 <Input
                   required
@@ -496,7 +495,7 @@ const App = (props) => {
             />
           </Form.Group>
           {body.services.willPurchaseTalentDirectory && (
-            <Form.Field inline>
+            <Form.Field inline required>
               <label>What is the yearly fee for Talent Directory?</label>
               <Input
                 required
@@ -535,7 +534,7 @@ const App = (props) => {
             />
           </Form.Group>
           {body.services.willPurchaseDirectory && (
-            <Form.Field inline>
+            <Form.Field inline required>
               <label>What is the yearly fee for Employee Directory?</label>
               <Input
                 required
@@ -549,7 +548,7 @@ const App = (props) => {
         </Form.Group>
 
         {body.services.credentialsOrEarners === 'credentials' ? (
-          <Form.Field inline>
+          <Form.Field inline required>
             <label>What is the excess Credential Fee?</label>
             <Input
               required
@@ -560,7 +559,7 @@ const App = (props) => {
             />
           </Form.Field>
         ) : (
-          <Form.Field inline>
+          <Form.Field inline required>
             <label>Excess Active Earner Fee?</label>
             <Input
               required

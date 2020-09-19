@@ -22,8 +22,8 @@ const contractData = {
     paymentTerms: 'annually', // quarterly, annually
   },
   services: {
-    accessFee: '',
-    allotment: '',
+    accessFee: 'asdf',
+    allotment: 'asfdsf',
     credentialsOrEarners: 'activeEarners', // credentials, activeEarners
     willPurchaseImplementation: false,
     implementation: 'selfPaced', // selfPaced, workshop, standard,
@@ -31,20 +31,20 @@ const contractData = {
       if credentialsOrEarners === credentials
     */
     willPurchaseHistoricCredentials: false,
-    numberOfHistoricCredentials: '',
-    feeForHistoricCredentials: '',
+    numberOfHistoricCredentials: 'asdfsdf',
+    feeForHistoricCredentials: 'asdf',
     /*
       if credentialsOrEarners === activeEarners
     */
     willPurchaseHistoricalActiveEarners: false,
-    numberOfHistoricalActiveEarners: '',
-    feeForHistoricalActiveEarners: '',
+    numberOfHistoricalActiveEarners: 'asdf',
+    feeForHistoricalActiveEarners: 'sf',
 
     willPurchaseTalentDirectory: false,
-    talentDirectoryFee: '',
+    talentDirectoryFee: 'sdfasd',
 
     willPurchaseDirectory: false,
-    employeeDirectoryFee: '',
+    employeeDirectoryFee: 'sadfsdf',
 
     excessCredentialFee: '8888',
     excessActiveEarnerFee: '9999',
