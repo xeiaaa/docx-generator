@@ -30,8 +30,8 @@ const App = (props) => {
     e.preventDefault()
 
     let res = await axios.post(
-      // 'https://docx-generator-sample.herokuapp.com/docx',
-      'http://localhost:5000/docx',
+      'https://docx-generator-sample.herokuapp.com/docx',
+      // 'http://localhost:5000/docx',
       body,
       {
         responseType: 'blob',
