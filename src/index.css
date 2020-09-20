@@ -11,3 +11,63 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+._body {
+  background-color: #f7f7f7;
+  padding: 10px;
+}
+
+._container {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 1px 2px #ccc;
+}
+
+.ui.form .inline.field,
+.ui.form .inline.fields {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+}
+
+.ui.form .inline.fields > ._group,
+.ui.form .inline.field > ._group {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.ui.form .inline.field > label {
+  width: 170px;
+  min-width: 170px;
+  max-width: 170px;
+}
+
+.ui.form ._group .field > label {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  margin: 0;
+}
+
+.ui.form .inline.field > .ui.input {
+  flex: 1;
+}
+
+.ui.form .inline.field > select {
+  flex: 1;
+}
+
+.ui.form .inline.fields > label {
+  width: 170px;
+  min-width: 170px;
+  max-width: 170px;
+}
+
+._group > .inline {
+  margin-bottom: 10px !important;
+}
