@@ -24,29 +24,33 @@ const contractData = {
     accessFee: '',
     allotment: '',
     credentialsOrEarners: 'activeEarners', // credentials, activeEarners
-    willPurchaseImplementation: false,
+    willPurchaseImplementation: true,
     implementation: 'selfPaced', // selfPaced, workshop, standard,
     /*
       if credentialsOrEarners === credentials
     */
-    willPurchaseHistoricCredentials: false,
+    willPurchaseHistoricCredentials: true,
     numberOfHistoricCredentials: '',
     feeForHistoricCredentials: '',
     /*
       if credentialsOrEarners === activeEarners
     */
-    willPurchaseHistoricalActiveEarners: false,
+    willPurchaseHistoricalActiveEarners: true,
     numberOfHistoricalActiveEarners: '',
     feeForHistoricalActiveEarners: '',
 
-    willPurchaseTalentDirectory: false,
+    willPurchaseTalentDirectory: true,
     talentDirectoryFee: '',
 
-    willPurchaseDirectory: false,
+    willPurchaseDirectory: true,
     employeeDirectoryFee: '',
 
     excessCredentialFee: '',
     excessActiveEarnerFee: '',
+
+    implementationFee: '',
+
+    credentialTemplates: '',
   },
 }
 

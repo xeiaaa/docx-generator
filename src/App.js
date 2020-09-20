@@ -30,8 +30,8 @@ const App = (props) => {
     e.preventDefault()
 
     let res = await axios.post(
-      'https://docx-generator-sample.herokuapp.com/docx',
-      // 'http://localhost:5000/docx',
+      // 'https://docx-generator-sample.herokuapp.com/docx',
+      'http://localhost:5000/docx',
       body,
       {
         responseType: 'blob',
@@ -233,7 +233,7 @@ const App = (props) => {
 
         {/* Access Fee */}
         <Form.Field required>
-          <label>Access Fee</label>
+          <label>Access Fee per year</label>
           <Input
             required
             value={body.services.accessFee}
@@ -320,6 +320,17 @@ const App = (props) => {
                   <option value="workshop">Workshop Package</option>
                   <option value="standard">Standard Implementation </option>
                 </select>
+              </Form.Field>
+
+              <Form.Field inline required>
+                <label>Number of Credential Templates?</label>
+                <Input
+                  required
+                  value={body.services.credentialTemplates}
+                  onChange={(e) => {
+                    setData('services', 'credentialTemplates', e.target.value)
+                  }}
+                />
               </Form.Field>
 
               <Form.Field inline required>
