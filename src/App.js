@@ -26,18 +26,13 @@ const App = (props) => {
       return { ...newBody }
     })
   }
-
+  console.log(process.env.REACT_APP_API)
   const submitHandler = async (e) => {
     e.preventDefault()
 
-    let res = await axios.post(
-      'https://docx-generator-sample.herokuapp.com/docx',
-      // 'http://localhost:5000/docx',
-      body,
-      {
-        responseType: 'blob',
-      },
-    )
+    let res = await axios.post(process.env.REACT_APP_API, body, {
+      responseType: 'blob',
+    })
     const url = window.URL.createObjectURL(new Blob([res.data]))
     const link = document.createElement('a')
     link.href = url
