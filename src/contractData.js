@@ -21,28 +21,32 @@ const contractData = {
     paymentTerms: 'annually', // quarterly, annually
   },
   services: {
+    isTiered: false,
+    numberOfTiers: 1,
+    tierData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+
     accessFee: '',
     allotment: '',
     credentialsOrEarners: 'activeEarners', // credentials, activeEarners
-    willPurchaseImplementation: true,
+    willPurchaseImplementation: false,
     implementation: 'selfPaced', // selfPaced, workshop, standard,
     /*
       if credentialsOrEarners === credentials
     */
-    willPurchaseHistoricCredentials: true,
+    willPurchaseHistoricCredentials: false,
     numberOfHistoricCredentials: '',
     feeForHistoricCredentials: '',
     /*
       if credentialsOrEarners === activeEarners
     */
-    willPurchaseHistoricalActiveEarners: true,
+    willPurchaseHistoricalActiveEarners: false,
     numberOfHistoricalActiveEarners: '',
     feeForHistoricalActiveEarners: '',
 
-    willPurchaseTalentDirectory: true,
+    willPurchaseTalentDirectory: false,
     talentDirectoryFee: '',
 
-    willPurchaseDirectory: true,
+    willPurchaseDirectory: false,
     employeeDirectoryFee: '',
 
     excessCredentialFee: '',

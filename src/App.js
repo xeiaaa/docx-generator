@@ -16,6 +16,19 @@ import {
 
 import contractData from './contractData'
 
+const order = [
+  'first',
+  'second',
+  'third',
+  'fourth',
+  'fifth',
+  'sixth',
+  'seventh',
+  'eighth',
+  'ninth',
+  'tenth',
+]
+
 const App = (props) => {
   const [body, setBody] = useState({ ...contractData })
 
@@ -26,7 +39,7 @@ const App = (props) => {
       return { ...newBody }
     })
   }
-  console.log(process.env.REACT_APP_API)
+
   const submitHandler = async (e) => {
     e.preventDefault()
 
@@ -42,6 +55,14 @@ const App = (props) => {
     link.setAttribute('download', fileName) //or any other extension
     document.body.appendChild(link)
     link.click()
+  }
+
+  const updateTierData = (index, key, value) => {
+    setBody((prevBody) => {
+      const newBody = { ...prevBody }
+      newBody.services.tierData[index][key] = value
+      return { ...newBody }
+    })
   }
 
   return (
@@ -232,53 +253,189 @@ const App = (props) => {
             />
           </Form.Group>
 
-          {/* Access Fee */}
-          <Form.Field required inline>
-            <label>Access Fee per year</label>
-            <Input
-              required
-              value={body.services.accessFee}
-              onChange={(e) => {
-                setData('services', 'accessFee', e.target.value)
-              }}
-            />
-          </Form.Field>
-
-          {/* Allotment */}
-          <Form.Field required inline>
-            <label>Number of Credentials or Active Earners</label>
-            <Input
-              required
-              value={body.services.allotment}
-              onChange={(e) => {
-                setData('services', 'allotment', e.target.value)
-              }}
-            />
-          </Form.Field>
-
-          {/* Creds / Active Earners */}
+          {/* Tiered Arrangement */}
           <Form.Group inline>
-            <label>Credentials or Active Earners?</label>
-            <Form.Field
-              control={Radio}
-              label="Credentials"
-              value="credentials"
-              name="credentialsOrEarners"
-              checked={body.services.credentialsOrEarners === 'credentials'}
-              onChange={(e, { value }) =>
-                setData('services', 'credentialsOrEarners', value)
-              }
-            />
-            <Form.Field
-              control={Radio}
-              label="Active Earners"
-              value="activeEarners"
-              name="credentialsOrEarners"
-              checked={body.services.credentialsOrEarners === 'activeEarners'}
-              onChange={(e, { value }) =>
-                setData('services', 'credentialsOrEarners', value)
-              }
-            />
+            <label>Will this be a tiered arrangement?</label>
+            <div className="_group">
+              <Form.Group inline>
+                <Form.Field
+                  control={Radio}
+                  label="Yes"
+                  value={true}
+                  name="isTiered"
+                  checked={body.services.isTiered === true}
+                  onChange={(e, { value }) =>
+                    setData('services', 'isTiered', value)
+                  }
+                />
+                <Form.Field
+                  control={Radio}
+                  label="No"
+                  value={false}
+                  name="isTiered"
+                  checked={body.services.isTiered === false}
+                  onChange={(e, { value }) =>
+                    setData('services', 'isTiered', value)
+                  }
+                />
+              </Form.Group>
+
+              {body.services.isTiered ? (
+                <React.Fragment>
+                  <Form.Field inline required>
+                    <label>Number of Tiers?</label>
+                    <select
+                      className="ui dropdown"
+                      required
+                      value={body.services.numberOfTiers}
+                      onChange={(e) => {
+                        setData('services', 'numberOfTiers', e.target.value)
+                      }}
+                    >
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                      <option value={6}>6</option>
+                      <option value={7}>7</option>
+                      <option value={8}>8</option>
+                      <option value={9}>9</option>
+                      <option value={10}>10</option>
+                    </select>
+                  </Form.Field>
+                  {/* 
+                  <pre>
+                    {JSON.stringify(body.agreementList.tierData, null, 2)}
+                  </pre> */}
+
+                  {/* Creds / Active Earners */}
+                  <Form.Group inline className="creds-inline">
+                    <label>Credentials or Active Earners?</label>
+                    <Form.Field
+                      control={Radio}
+                      label="Credentials"
+                      value="credentials"
+                      name="credentialsOrEarners"
+                      checked={
+                        body.services.credentialsOrEarners === 'credentials'
+                      }
+                      onChange={(e, { value }) =>
+                        setData('services', 'credentialsOrEarners', value)
+                      }
+                    />
+                    <Form.Field
+                      control={Radio}
+                      label="Active Earners"
+                      value="activeEarners"
+                      name="credentialsOrEarners"
+                      checked={
+                        body.services.credentialsOrEarners === 'activeEarners'
+                      }
+                      onChange={(e, { value }) =>
+                        setData('services', 'credentialsOrEarners', value)
+                      }
+                    />
+                  </Form.Group>
+
+                  {Array.from(
+                    Array(parseInt(body.services.numberOfTiers)).keys(),
+                  ).map((_, index) => {
+                    const yearString = order[index]
+                    return (
+                      <div key={index} style={{ marginBottom: 30 }}>
+                        <Form.Field inline required>
+                          <label>
+                            What is the number of Credentials or Active Earners
+                            in the <em>{yearString}</em> tier?
+                          </label>
+                          <Input
+                            required
+                            type="number"
+                            min={0}
+                            value={body.services.tierData[index].count || ''}
+                            onChange={(e) => {
+                              updateTierData(index, 'count', e.target.value)
+                            }}
+                          />
+                        </Form.Field>
+
+                        <Form.Field inline required>
+                          <label>
+                            What is the per-Active Earner or per-Credential Fee
+                            in the <em>{yearString}</em> tier?
+                          </label>
+                          <Input
+                            required
+                            type="number"
+                            min={0}
+                            value={body.services.tierData[index].fee || ''}
+                            onChange={(e) => {
+                              updateTierData(index, 'fee', e.target.value)
+                            }}
+                          />
+                        </Form.Field>
+                      </div>
+                    )
+                  })}
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {/* Access Fee */}
+                  <Form.Field required inline>
+                    <label>Access Fee per year</label>
+                    <Input
+                      required
+                      value={body.services.accessFee}
+                      onChange={(e) => {
+                        setData('services', 'accessFee', e.target.value)
+                      }}
+                    />
+                  </Form.Field>
+
+                  {/* Allotment */}
+                  <Form.Field required inline>
+                    <label>Number of Credentials or Active Earners</label>
+                    <Input
+                      required
+                      value={body.services.allotment}
+                      onChange={(e) => {
+                        setData('services', 'allotment', e.target.value)
+                      }}
+                    />
+                  </Form.Field>
+
+                  {/* Creds / Active Earners */}
+                  <Form.Group inline className="creds-inline">
+                    <label>Credentials or Active Earners?</label>
+                    <Form.Field
+                      control={Radio}
+                      label="Credentials"
+                      value="credentials"
+                      name="credentialsOrEarners"
+                      checked={
+                        body.services.credentialsOrEarners === 'credentials'
+                      }
+                      onChange={(e, { value }) =>
+                        setData('services', 'credentialsOrEarners', value)
+                      }
+                    />
+                    <Form.Field
+                      control={Radio}
+                      label="Active Earners"
+                      value="activeEarners"
+                      name="credentialsOrEarners"
+                      checked={
+                        body.services.credentialsOrEarners === 'activeEarners'
+                      }
+                      onChange={(e, { value }) =>
+                        setData('services', 'credentialsOrEarners', value)
+                      }
+                    />
+                  </Form.Group>
+                </React.Fragment>
+              )}
+            </div>
           </Form.Group>
 
           {/* Purchase Implementation? */}
