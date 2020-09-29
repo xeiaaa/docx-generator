@@ -1,9 +1,9 @@
 const contractData = {
   issuer: {
-    name: '',
-    address: '',
-    corporateLocation: '',
-    entity: '',
+    name: 'asdf',
+    address: 'asf',
+    corporateLocation: 'sdf',
+    entity: 'asdf',
   },
   agreement: {
     issuerType: 'academic', // academic , non-academic
@@ -16,7 +16,7 @@ const contractData = {
     */
     isFirstDayOfMonth: true,
     startDate: '',
-    term: '',
+    term: 'asf',
     autoRenew: false,
     paymentTerms: 'annually', // quarterly, annually
   },
@@ -24,9 +24,10 @@ const contractData = {
     isTiered: false,
     numberOfTiers: 1,
     tierData: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+    selectedTier: 0,
 
-    accessFee: '',
-    allotment: '',
+    accessFee: 'asdf',
+    allotment: 'asdf',
     credentialsOrEarners: 'activeEarners', // credentials, activeEarners
     willPurchaseImplementation: false,
     implementation: 'selfPaced', // selfPaced, workshop, standard,
@@ -49,12 +50,12 @@ const contractData = {
     willPurchaseDirectory: false,
     employeeDirectoryFee: '',
 
-    excessCredentialFee: '',
-    excessActiveEarnerFee: '',
+    excessCredentialFee: 'sdfa',
+    excessActiveEarnerFee: 'asdf',
 
-    implementationFee: '',
+    implementationFee: 'asdf',
 
-    credentialTemplates: '',
+    credentialTemplates: 'asfd',
   },
 }
 

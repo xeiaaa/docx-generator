@@ -373,11 +373,35 @@ const App = (props) => {
                             onChange={(e) => {
                               updateTierData(index, 'fee', e.target.value)
                             }}
+                            step=".01"
                           />
                         </Form.Field>
                       </div>
                     )
                   })}
+
+                  <Form.Field inline required>
+                    <label>Tier to be purchased on the first year</label>
+                    <select
+                      className="ui dropdown"
+                      required
+                      value={body.services.selectedTier}
+                      onChange={(e) => {
+                        setData('services', 'selectedTier', e.target.value)
+                      }}
+                      style={{ textTransform: 'capitalize' }}
+                    >
+                      {Array.from(
+                        Array(parseInt(body.services.numberOfTiers)).keys(),
+                      ).map((_, index) => {
+                        return (
+                          <option key={index} value={index}>
+                            {order[index]}
+                          </option>
+                        )
+                      })}
+                    </select>
+                  </Form.Field>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
@@ -766,29 +790,30 @@ const App = (props) => {
             </Form.Group>
           </Form.Group>
 
-          {body.services.credentialsOrEarners === 'credentials' ? (
-            <Form.Field inline required>
-              <label>What is the excess Credential Fee?</label>
-              <Input
-                required
-                value={body.services.excessCredentialFee}
-                onChange={(e) => {
-                  setData('services', 'excessCredentialFee', e.target.value)
-                }}
-              />
-            </Form.Field>
-          ) : (
-            <Form.Field inline required>
-              <label>Excess Active Earner Fee?</label>
-              <Input
-                required
-                value={body.services.excessActiveEarnerFee}
-                onChange={(e) => {
-                  setData('services', 'excessActiveEarnerFee', e.target.value)
-                }}
-              />
-            </Form.Field>
-          )}
+          {!body.services.isTiered &&
+            (body.services.credentialsOrEarners === 'credentials' ? (
+              <Form.Field inline required>
+                <label>What is the excess Credential Fee?</label>
+                <Input
+                  required
+                  value={body.services.excessCredentialFee}
+                  onChange={(e) => {
+                    setData('services', 'excessCredentialFee', e.target.value)
+                  }}
+                />
+              </Form.Field>
+            ) : (
+              <Form.Field inline required>
+                <label>Excess Active Earner Fee?</label>
+                <Input
+                  required
+                  value={body.services.excessActiveEarnerFee}
+                  onChange={(e) => {
+                    setData('services', 'excessActiveEarnerFee', e.target.value)
+                  }}
+                />
+              </Form.Field>
+            ))}
 
           <Button primary>Generate Contract</Button>
         </Form>
